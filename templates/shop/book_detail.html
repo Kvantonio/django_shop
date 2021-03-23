@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Book detail {% endblock %}
+
+{% block content %}
+
+
+            <p>{{ object.title }}</p>
+            <p>{{ object.author.get }}</p>
+            <p>{{ object.price }}</p>
+            <img src="{{ object.image.url }}" >
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Book list {% endblock %}
+
+{% block content %}
+
+    {% if  object_list %}
+        {% for object in object_list %}
+            <p>{{ object.title }}</p>
+            <p>{{ object.author.get }}</p>
+            <p>{{ object.price }}</p>
+            <a href="{% url 'shop:book_detail' object.pk %}"><img src="{{ object.image.url }}" ></a>
+
+
+        {% endfor %}
+
+    {% else %} <p>Empty</p>
+    {% endif %}
+
+
+{% endblock %}
