@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Book detail {% endblock %}
+
+{% block content %}
+
+
+    {% for item in object.item_set.all %}
+        {{ item.book.price }}
+    {% endfor %}
+
+
+
+
+
+
+{% endblock %}

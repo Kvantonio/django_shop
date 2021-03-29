@@ -3,7 +3,7 @@
 
 {% block content %}
 
-
+            <a href="{% url 'store:cart-create' object.pk %}">  Add to cart </a>
             <p>{{ object.title }}</p>
             <p>{{ object.author.get }}</p>
             <p>{{ object.price }}</p>
