@@ -103,6 +103,9 @@ class CartDetailView(DetailView):
     model = Cart
 
 
+class CartCreate(CreateView):
+    pass
+
 def add_to_cart(request, pk):
     count = 1
     user = request.user
@@ -117,7 +120,7 @@ def add_to_cart(request, pk):
             book=Books.objects.get(pk=pk),
             quantity=item.quantity + count
         )
-        item.save()
+    item.save()
 
     cart, created = Cart.objects.get_or_create(
         user=user
@@ -130,5 +133,5 @@ def add_to_cart(request, pk):
             total_price=item.book.price,
             user=user
         )
-        cart.save()
-    return redirect('store:cart-detail')
+    cart.save()
+    return redirect('shop:cart')
