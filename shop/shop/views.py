@@ -126,7 +126,6 @@ def add_to_cart(request, pk):
         defaults={'total_sum': Books.objects.get(pk=pk).price},
     )
 
-
     if not created:
         item.quantity += 1
         item.total_sum += item.book.price

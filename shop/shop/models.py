@@ -45,3 +45,5 @@ class Item(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     total_sum = models.FloatField(default=0)
 
+    def __str__(self):
+        return self.total_sum

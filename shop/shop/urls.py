@@ -16,6 +16,8 @@ urlpatterns = [
     path('cart/<int:pk>', views.add_to_cart, name='cart-create'),
     path('cart-del/<int:pk>', views.del_item_cart, name='cart-delete'),
     path('change_password/', views.change_password, name='change_password'),
-    path('search-res/', views.SearchResultView.as_view(), name='search_results'),
+    path('search-res/',
+         views.SearchResultView.as_view(),
+         name='search_results'),
 
 ]

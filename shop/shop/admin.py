@@ -22,7 +22,6 @@ class PublisherAdmin(admin.ModelAdmin):
     list_display = ['pub_title']
 
 
-
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
     fields = ['book', 'quantity', 'user']
