@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+
+    {% for item in object_list %}
+        {{ item.book.title }}
+        {{ item.book.price }}
+        {{ item.quantity }}
+        {{ item.id }}
+        <a href="{% url 'shop:cart-delete' item.pk %}">delete</a>
+        <br>
+    {% empty %}
+        <p>No books</p>
+    {% endfor %}
+
+{% if cart_total %}
+    <p>Total price: </p>{{ cart_total }}
+{% endif %}
+
+
+
+
+{% endblock %}

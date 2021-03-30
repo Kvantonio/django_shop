@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Book list {% endblock %}
+
+{% block content %}
+
+        <form action="{% url 'shop:search_results' %}" method="get">
+<div class="main">
+      <div class="form-group has-search">
+        <input type="text" name="q" class="form-control" placeholder="Search">
+      </div>
+</div>
+</form>
+
+
+    {% if  object_list %}
+        {% for object in object_list %}
+            <p>{{ object.title }}</p>
+            <p>{{ object.author.get }}</p>
+            <p>{{ object.price }}</p>
+            <a href="{% url 'shop:book_detail' object.pk %}"><img src="{{ object.image.url }}"  alt=""></a>
+
+
+        {% endfor %}
+
+    {% else %} <p>Empty</p>
+    {% endif %}
+
+
+{% endblock %}

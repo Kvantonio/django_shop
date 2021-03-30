@@ -3,11 +3,12 @@ from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.db.models import Q, Sum
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, ListView
 
-from shop.models import Books, Cart, Item
+from shop.models import Books, Item
 
 
 # Create your views here.
@@ -30,7 +31,7 @@ def success(request):
 class LoginForm(LoginView):
     model = User
     template_name = "registration/login.html"
-    success_url = 'shop/'
+    success_url = '/shop/'
 
     def form_valid(self, form):
         """Security check complete. Log the user in."""
@@ -40,7 +41,7 @@ class LoginForm(LoginView):
             messages.SUCCESS,
             'Authorization success!'
         )
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(self.success_url)
 
 
 def logout_view(request):
@@ -99,39 +100,59 @@ def change_password(request):
                   {'form': form})
 
 
-class CartDetailView(DetailView):
-    model = Cart
+class CartListView(ListView):
+    model = Item
 
+    def get_queryset(self):
+        return super(CartListView, self)\
+            .get_queryset()\
+            .filter(user=self.request.user)
 
-class CartCreate(CreateView):
-    pass
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cart_total_price = Item.objects\
+            .filter(user=self.request.user)\
+            .aggregate(Sum('total_sum'))
+
+        context['cart_total'] = cart_total_price['total_sum__sum']
+        return context
+
 
 def add_to_cart(request, pk):
-    count = 1
     user = request.user
     item, created = Item.objects.get_or_create(
         user=user,
         book=Books.objects.get(pk=pk),
+        defaults={'total_sum': Books.objects.get(pk=pk).price},
     )
 
-    if not created:
-        item = Item(
-            user=user,
-            book=Books.objects.get(pk=pk),
-            quantity=item.quantity + count
-        )
-    item.save()
-
-    cart, created = Cart.objects.get_or_create(
-        user=user
-    )
 
     if not created:
-        cart = Cart(
-            product=item,
-            total_books=item.quantity,
-            total_price=item.book.price,
-            user=user
-        )
-    cart.save()
+        item.quantity += 1
+        item.total_sum += item.book.price
+        item.save()
+
     return redirect('shop:cart')
+
+
+def del_item_cart(request, pk):
+    item = Item.objects.get(id=pk)
+    if item.quantity > 1:
+        item.quantity -= 1
+        item.total_sum -= item.book.price
+        item.save()
+    else:
+        item.delete()
+    return redirect('shop:cart')
+
+
+class SearchResultView(ListView):
+    model = Books
+    template_name = 'store/search_results.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Books.objects.filter(
+            Q(title__contains=query) | Q(genre__contains=query)
+        )
+        return object_list

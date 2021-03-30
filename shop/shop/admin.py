@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Author, Books, Cart, Item, Publisher
+from .models import Author, Books, Item, Publisher
 
 
 @admin.register(Books)
@@ -22,13 +22,8 @@ class PublisherAdmin(admin.ModelAdmin):
     list_display = ['pub_title']
 
 
-@admin.register(Cart)
-class CartAdmin(admin.ModelAdmin):
-    fields = ['user', 'all_price']
-    list_display = ['user', 'all_price']
-
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    fields = ['book', 'quantity', 'user', 'cart']
-    list_display = ['book', 'quantity', 'user', 'cart']
+    fields = ['book', 'quantity', 'user']
+    list_display = ['book', 'quantity', 'user']

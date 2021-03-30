@@ -39,19 +39,9 @@ class Books(models.Model):
         return self.title
 
 
-class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    all_price = models.FloatField(default=0)
-
-    def __str__(self):
-        return self.all_price
-
-
 class Item(models.Model):
     book = models.ForeignKey(Books, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    total_sum = models.FloatField(default=0)
 
-    def __str__(self):
-        return self.book
