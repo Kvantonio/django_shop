@@ -17,7 +17,7 @@ class Publisher(models.Model):
         return self.pub_title
 
 
-class Books(models.Model):
+class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.ManyToManyField(Author)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
@@ -39,11 +39,8 @@ class Books(models.Model):
         return self.title
 
 
-class Item(models.Model):
-    book = models.ForeignKey(Books, on_delete=models.CASCADE)
+class Item(models.Model): # noqa DJ08
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     total_sum = models.FloatField(default=0)
-
-    def __str__(self):
-        return self.total_sum

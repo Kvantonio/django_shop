@@ -8,19 +8,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, ListView
 
-from shop.models import Books, Item
+from shop.models import Book, Item
 
 
 # Create your views here.
 
 
 class BookList(ListView):
-    model = Books
+    model = Book
     template_name = 'shop/books_list.html'
 
 
 class BookDetail(DetailView):
-    model = Books
+    model = Book
     template_name = 'shop/book_detail.html'
 
 
@@ -122,8 +122,8 @@ def add_to_cart(request, pk):
     user = request.user
     item, created = Item.objects.get_or_create(
         user=user,
-        book=Books.objects.get(pk=pk),
-        defaults={'total_sum': Books.objects.get(pk=pk).price},
+        book=Book.objects.get(pk=pk),
+        defaults={'total_sum': Book.objects.get(pk=pk).price},
     )
 
     if not created:
@@ -146,12 +146,12 @@ def del_item_cart(request, pk):
 
 
 class SearchResultView(ListView):
-    model = Books
+    model = Book
     template_name = 'store/search_results.html'
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list = Books.objects.filter(
+        object_list = Book.objects.filter(
             Q(title__contains=query) | Q(genre__contains=query)
         )
         return object_list
