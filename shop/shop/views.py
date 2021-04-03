@@ -8,10 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, ListView
 
-from shop.models import Book, Item
-
-
-# Create your views here.
+from .models import Book, Item, Order
 
 
 class BookList(ListView):
@@ -100,11 +97,11 @@ def change_password(request):
                   {'form': form})
 
 
-class CartListView(ListView):
-    model = Item
+class CartDetailView(ListView):
+    model = Order
 
     def get_queryset(self):
-        return super(CartListView, self)\
+        return super(CartDetailView, self)\
             .get_queryset()\
             .filter(user=self.request.user)
 
@@ -120,17 +117,24 @@ class CartListView(ListView):
 
 def add_to_cart(request, pk):
     user = request.user
+    order, ord_created = Order.objects.get_or_create(
+        user=user,
+        defaults={'total_sum': 0},
+    )
+
     item, created = Item.objects.get_or_create(
         user=user,
         book=Book.objects.get(pk=pk),
-        defaults={'total_sum': Book.objects.get(pk=pk).price},
+        defaults={
+            'total_sum': Book.objects.get(pk=pk).price,
+            'order': order},
+
     )
 
     if not created:
         item.quantity += 1
         item.total_sum += item.book.price
         item.save()
-
     return redirect('shop:cart')
 
 
@@ -142,6 +146,7 @@ def del_item_cart(request, pk):
         item.save()
     else:
         item.delete()
+
     return redirect('shop:cart')
 
 
@@ -155,3 +160,10 @@ class SearchResultView(ListView):
             Q(title__contains=query) | Q(genre__contains=query)
         )
         return object_list
+
+
+def order_send(request):
+    order = Order.objects.get(user=request.user)
+    order.status = 1
+    order.save()
+    return redirect('shop:cart')

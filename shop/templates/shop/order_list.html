@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+    {% for object in object_list %}
+        {{ object.id }}
+        {% if object.status == 0 %}
+            {% for item in object.item_set.all %}
+                 <p>id: {{ item.id }}</p>
+                <p>kol: {{ item.quantity }}</p>
+                <p>sum: {{ item.total_sum }}</p>
+                    <a href="{% url 'shop:cart-delete' item.pk %}">delete</a>
+            {% endfor %}
+
+
+            <br>
+            {% if cart_total %}
+                <p>Total price: </p>{{ cart_total }}
+            {% endif %}
+        {% elif object.status == 1 %}
+            <p>Status: Considered</p>
+        {% elif object.status == 2 %}
+            <p>Status: In progress</p>
+        {% elif object.status == 3 %}
+            <p>Status: Done</p>
+
+        {% endif %}
+    {% empty %}
+            <p>No books</p>
+
+    {% endfor %}
+
+
+
+    <a href="{% url 'shop:order-send' %}">status</a>
+
+
+
+
+
+
+
+{% endblock %}
