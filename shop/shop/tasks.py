@@ -14,7 +14,7 @@ def send_mail_task(subject, message, email):
 
 
 @shared_task
-def input_books():
+def shop_sync():
     url = 'http://127.0.0.1:8000/stock/authors/'
     response_author = requests.get(url).json()
     while 1:

@@ -21,7 +21,7 @@
 
 
             <p>{{ object.price }}</p>
-            <a href="{% url 'shop:book_detail' object.pk %}"><img src="{{ object.image.url }}"  alt=""></a>
+            <a href="{% url 'shop:book_detail' object.pk %}"><img src="{{ object.image}}"  alt=""></a>
 
 
         {% endfor %}
