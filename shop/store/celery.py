@@ -2,9 +2,9 @@ import os
 
 from celery import Celery
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangoProject_test.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'store.settings')
 
-app = Celery('djangoProject_test')
+app = Celery('store')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

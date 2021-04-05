@@ -19,7 +19,6 @@ class Publisher(models.Model):
 
 
 class Book(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=100)
     author = models.ManyToManyField(Author)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
@@ -49,7 +48,6 @@ class Order(models.Model): # noqa DJ08
         IN_PROGRESS = 2, 'In progress',
         DONE = 3, 'Done',
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     user_email = models.EmailField()
     user_name = models.CharField(max_length=100)
     status = models.PositiveSmallIntegerField(

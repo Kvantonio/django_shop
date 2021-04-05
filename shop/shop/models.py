@@ -1,7 +1,7 @@
 import uuid
 
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, URLValidator
 from django.db import models
 
 
@@ -20,7 +20,6 @@ class Publisher(models.Model):
 
 
 class Book(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=100)
     author = models.ManyToManyField(Author)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
@@ -30,7 +29,7 @@ class Book(models.Model):
         validators=[MinValueValidator(1),
                     MaxValueValidator(2022)]
     )
-    image = models.ImageField(upload_to='static/images')
+    image = models.TextField(validators=[URLValidator()])
     mark = models.FloatField(
         validators=[MinValueValidator(1),
                     MaxValueValidator(5)]
@@ -49,7 +48,6 @@ class Order(models.Model): # noqa DJ08
         IN_PROGRESS = 2, 'In progress',
         DONE = 3, 'Done',
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     total_sum = models.FloatField(default=0)
     status = models.PositiveSmallIntegerField(
