@@ -6,29 +6,29 @@ from .models import Author, Book, Order, OrderItem, Publisher
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['title', 'description', 'image', 'mark', 'status', 'price',
-                  'author', 'pub_year', 'genre', 'publisher']
+        fields = ['id', 'title', 'description', 'image', 'mark', 'status',
+                  'price', 'author', 'pub_year', 'genre', 'publisher']
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['user_email', 'user_name', 'status', 'total_sum']
+        fields = ['id', 'user_email', 'user_name', 'status', 'total_sum']
 
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ['name']
+        fields = ['id', 'name']
 
 
 class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publisher
-        fields = ['pub_title']
+        fields = ['id', 'pub_title']
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ['book', 'quantity', 'order', 'total_sum']
+        fields = ['id', 'book', 'quantity', 'order', 'total_sum']

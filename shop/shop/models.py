@@ -63,7 +63,3 @@ class Item(models.Model): # noqa DJ08
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     total_sum = models.FloatField(default=0)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-
-
-
-
