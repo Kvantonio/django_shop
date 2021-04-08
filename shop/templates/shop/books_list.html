@@ -2,6 +2,12 @@
 {% block title %}Book list {% endblock %}
 
 {% block content %}
+<style>
+    img{
+        width: 250px;
+
+    }
+</style>
 
         <form action="{% url 'shop:search_results' %}" method="get">
 <div class="main">
@@ -14,15 +20,18 @@
 
     {% if  object_list %}
         {% for object in object_list %}
+
+
+
+            <hr>
+            <a href="{% url 'shop:book_detail' object.pk %}"><img src="{{ object.image}}"  alt=""></a>
             <p>{{ object.title }}</p>
+            <p>Author:</p>
             {% for author in object.author.all %}
                 {{ author }}
             {% endfor %}
-
-
-            <p>{{ object.price }}</p>
-            <a href="{% url 'shop:book_detail' object.pk %}"><img src="{{ object.image}}"  alt=""></a>
-
+            <p>Price: {{ object.price }}</p>
+            <a href="{% url 'shop:book_detail' object.pk %}">Buy</a>
 
         {% endfor %}
 

@@ -1,0 +1,45 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+amqp = "*"
+asgiref = "*"
+billiard = "*"
+celery = "*"
+click = "*"
+click-didyoumean = "*"
+click-plugins = "*"
+click-repl = "*"
+django-extensions = "*"
+django-redis = "*"
+django-rest-framework = "*"
+django-widget-tweaks = "*"
+djangorestframework = "*"
+flake8 = "*"
+flake8-django = "*"
+flake8-import-order = "*"
+flake8-print = "*"
+kombu = "*"
+mccabe = "*"
+prompt-toolkit = "*"
+pycodestyle = "*"
+pyflakes = "*"
+pytz = "*"
+redis = "*"
+six = "*"
+sqlparse = "*"
+uuid = "*"
+vine = "*"
+wcwidth = "*"
+Django = "*"
+Pillow = "*"
+psycopg2-binary = "*"
+django-celery-results = "*"
+requests = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

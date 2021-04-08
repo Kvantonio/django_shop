@@ -1,5 +1,5 @@
 import json
-
+import requests
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -165,7 +165,39 @@ class SearchResultView(ListView):
 
 
 def order_send(request):
+    user = request.user
     order = Order.objects.get(user=request.user)
-    order.status = 1
+    t = Item.objects.filter(user=user).aggregate(Sum('total_sum'))
+    order.total_sum = t['total_sum__sum']
     order.save()
-    return redirect('shop:cart')
+    url = 'http://127.0.0.1:8000/stock/orders/'
+
+    items = []
+    for item in Item.objects.filter(user=user):
+        items.append(
+            {
+                "book": int(item.book.id),
+                "quantity": int(item.quantity),
+                "order": int(item.order.id),
+                "total_sum": float(item.total_sum)
+            }
+        )
+
+    oreder_send = json.dumps({
+        "user_email": user.email,
+        "user_name": str(user.first_name + " " + user.last_name),
+        "status": int(order.status),
+        "total_sum": float(order.total_sum),
+        "items": items
+    })
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url=url, headers=headers, data=oreder_send)
+
+    if response.status_code == 201:
+        order.status = 1
+        order.save()
+        messages.success(request, "Item added to the cart!")
+        return redirect('shop')
+    else:
+        messages.error(request, "Item not added to the cart!")
+        return redirect('shop:cart')

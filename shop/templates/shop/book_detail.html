@@ -3,11 +3,17 @@
 
 {% block content %}
 
-            <a href="{% url 'shop:cart-create' object.pk %}">  Add to cart </a>
-            <p>{{ object.title }}</p>
-            <p>{{ object.author.all }}</p>
+
+            <h1>{{ object.title }}</h1>
+            <img style="width: 300px" src="{{ object.image }}" >
+    <blockquote>{{ object.description }}</blockquote>
+    {% for author in object.author.all %}
+        <p>{{ author }}</p>
+    {% endfor %}
+
+
             <p>{{ object.price }}</p>
-            <img src="{{ object.image.url }}" >
+            <a href="{% url 'shop:cart-create' object.pk %}">  Add to cart </a>
 
 
 
